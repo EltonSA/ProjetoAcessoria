@@ -4,12 +4,11 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import time
-import main
 
 class usuarioAcessorias:
-    def __init__(self, driver):
-        self.usuario = main.set_temp_text
-        self.senha = main.clear_temp_text
+    def __init__(self, driver, user, password):
+        self.usuario = user
+        self.senha = password
         self.driver = driver
 
     def fazerLogin(self):
@@ -38,5 +37,4 @@ class usuarioAcessorias:
         .move_to_element(econtinuoUm)\
         .perform()
         time.sleep(2)
-
 

@@ -6,14 +6,25 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import navegador
-import usuario
 import app
 import time
 import openpyxl
 import threading
 
 
+def set_temp_text(event, entry, temp_text):
+    if entry.get() == temp_text:
+        entry.delete(0, "end")  # Limpa o texto temporário
+
+def clear_temp_text(event, entry, temp_text):
+    if not entry.get():
+        entry.insert(0, temp_text)  # Se o Entry estiver vazio, insira o texto temporário
+
+# Função chamada pelo botão ENTRAR, que chama outra função no arquivo App.py
+def realizarLogin():
+    userLogin = login.get()
+    userPassword = senha.get()
+    app.teste(userLogin, userPassword)
 
 janela = Tk()
 janela.title("MailWave")
@@ -37,8 +48,8 @@ login = Entry(janela,
               )
 login.insert(0, login_temp_text)
 login.place(x=60, y=213, width=282, height=45)
-login.bind("<FocusIn>", lambda event: usuario.set_temp_text(event, usuario, login_temp_text))
-login.bind("<FocusOut>", lambda event: usuario.clear_temp_text(event, senha, login_temp_text))
+login.bind("<FocusIn>", lambda event: set_temp_text(event, usuario, login_temp_text))
+login.bind("<FocusOut>", lambda event: clear_temp_text(event, senha, login_temp_text))
 
 senha = Entry(janela,
               fg="white",
@@ -70,7 +81,7 @@ butao = Button(janela,
                justify=CENTER,
                text="Entrar",
                background="#8F01EC",
-               command=app.teste,
+               command=realizarLogin,
    
                )
 butao.place(x=161, y=529, width=80, height=39)

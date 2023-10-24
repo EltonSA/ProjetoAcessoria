@@ -6,14 +6,12 @@ from selenium.webdriver.common.by import By
 import time
 
 
-class bootAcessorias:
+class navegadorAcessorias:
     def __init__(self):
         self.options = webdriver.ChromeOptions()
         self.driver = webdriver.Chrome()
 
-
-
-    def login(self):
+    def abrirBrowser(self):
         driver = self.driver
         driver.implicitly_wait(10)
         driver.maximize_window()
