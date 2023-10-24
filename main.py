@@ -18,11 +18,11 @@ import threading
 janela = Tk()
 janela.title("MailWave")
 janela.geometry("720x600+610+153")
-#janela.iconbitmap(default="C:\\Users\\elton.santos\\Desktop\\projetos\\emailEXE\\icones\\logo.ico")
+janela.iconbitmap(default="C:\\Users\\elton.santos\\Desktop\\projetos\\emailEXE\\icones\\logo.ico")
 
-#img_fundo = PhotoImage(file="C:\\Users\\elton.santos\\Desktop\\projetos\\emailEXE\\imagens\\layout.png")
-#lab_fundo = Label(janela, image=img_fundo)
-#lab_fundo.pack()
+img_fundo = PhotoImage(file="C:\\Users\\elton.santos\\Desktop\\projetos\\emailEXE\\imagens\\layout.png")
+lab_fundo = Label(janela, image=img_fundo)
+lab_fundo.pack()
 
 login_temp_text = ""
 senha_temp_text = ""
