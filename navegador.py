@@ -14,5 +14,4 @@ class navegadorAcessorias:
     def abrirBrowser(self):
         driver = self.driver
         driver.implicitly_wait(10)
-        driver.maximize_window()
         driver.get("https://app.acessorias.com")

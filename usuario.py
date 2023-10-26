@@ -3,7 +3,9 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-import pandas as pandinha
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import openpyxl
 import time
 
 class usuarioAcessorias:
@@ -24,11 +26,103 @@ class usuarioAcessorias:
         campo_senha.clear()
         campo_senha.send_keys(self.senha)
         campo_senha.send_keys(Keys.RETURN)
-        time.sleep(9000)
+        time.sleep(2)
 
+    def carregarCNPJ(self, planilha):
+        wb = openpyxl.load_workbook(planilha)
+        ws = wb.active
+
+        cnpjs = []
+        try:
+            if ws.cell(row=1, column=1).value == 'CNPJ':
+                for row in ws.iter_rows(min_row=2, values_only=True):
+                    cnpj = row[0]  # Supondo que a primeira coluna contenha os CNPJs
+                    cnpjs.append(cnpj)
+            else:
+                mb.showerror(title ="Erro", message = "Nenhuma empresa encontrada na planilha")
+
+        except:            
+            mb.showerror(title ="Erro", message = "Nenhuma empresa encontrada na planilha")
+
+        return cnpjs
+
+    def marcarDepartamento(self):
+        time.sleep(1)
+        driver = self.driver
+
+        botaoMenu = driver.find_element(By.XPATH, "//*[@id='menu-toggler']")
+        botaoMenu.click()
+
+        time.sleep(2)
+
+        # Clicar na aba "Empresa"
+        campo_empresa = driver.find_element(By.XPATH, "//a[@href='sysmain.php?m=4']")
+        campo_empresa.click()
+        time.sleep(2)
         
-    def lerPlanilha(self): # Em construção
-        planilhaDados = pandinha.read_csv(planilha, names=['CNPJ'])
+        empresas = self.carregarCNPJ(self.planilha)
+        for cnpj in empresas:
+            campo_busca = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, "//input[@name='searchString']"))
+            )
+            campo_busca.clear()
+            campo_busca.send_keys(cnpj)
+            campo_busca.send_keys(Keys.RETURN)
+            time.sleep(2)
+
+            try:
+                # Clicar no primeiro resultado de empresa encontrado
+                campo_empresaId = driver.find_element(By.XPATH, "//*[@id='divEmpresas']/div[1]")
+                campo_empresaId.click()
+                time.sleep(2)
+
+                # Listas de XPath para as interações
+                clicks1 = ["//*[@id='CttEdit_0_1']/button[1]", "//*[@id='CttEdit_0_2']/button[1]", "//*[@id='CttEdit_0_3']/button[1]", "//*[@id='CttEdit_0_4']/button[1]", "//*[@id='CttEdit_0_5']/button[1]"]
+                clicks2 = ["//*[@id='divCtt_0_1']/div[1]/div/span[1]/button", "//*[@id='divCtt_0_2']/div[1]/div/span[1]/button", "//*[@id='divCtt_0_3']/div[1]/div/span[1]/button", "//*[@id='divCtt_0_4']/div[1]/div/span[1]/button", "//*[@id='divCtt_0_5']/div[1]/div/span[1]/button"]
+                clicks3 = ["//*[@id='selDpZ_0_1']/a[1]", "//*[@id='selDpZ_0_2']/a[1]", "//*[@id'selDpZ_0_3']/a[1]", "//*[@id'selDpZ_0_4'/a[1]" ,"//*[@id='selDpZ_0_5']/a[1]"]
+                clicks4 = ["//*[@id='CttSave_0_1']/button[1]", "//*[@id='CttSave_0_2']/button[1]", "//*[@id='CttSave_0_3']/button[1]", "//*[@id='CttSave_0_4']/button[1]", "//*[@id='CttSave_0_5']/button[1]"]
+
+                # Clica no ícone para editar o contato
+                for x in clicks1:
+                    try:
+                        click01 = driver.find_element(By.XPATH, x)
+                        click01.click()
+                    except:
+                        pass
+
+                # Clica no chuveirinho para abrir os departamentos
+                for y in clicks2:
+                    try:
+                        click02 = driver.find_element(By.XPATH, y)
+                        click02.click()
+                    except:
+                        pass
+
+                # Marca todos os departamentos dos contatos
+                for z in clicks3:
+                    try:
+                        click03 = driver.find_element(By.XPATH, z)
+                        click03.click()
+                    except:
+                        pass
+
+                # Clica em salvar os dados
+                for s in clicks4:
+                    try:
+                        click04 = driver.find_element(By.XPATH, s)
+                        click04.click()
+                    except:
+                        pass
+
+                # Clica em voltar para o campo de busca
+                campo_voltar = driver.find_element(By.XPATH, "//*[@id='navFim']/div[2]/button[2]")
+                campo_voltar.click()
+                time.sleep(4)
+
+                print("Contatos marcados para o CNPJ:", cnpj)
+
+            except:
+                print("Erro ao interagir com o CNPJ:", cnpj)
 
 
 

@@ -35,6 +35,7 @@ def teste(userLogin, userPassword, userPlanilha):
     user = usuario.usuarioAcessorias(boot.driver, userLogin, userPassword, userPlanilha)
     boot.abrirBrowser()
     user.fazerLogin()
+    user.marcarDepartamento()
 
 
 
