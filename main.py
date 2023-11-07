@@ -1,15 +1,13 @@
+#encoding: utf-8
 from tkinter import *
 from tkinter import messagebox as mb
 from tkinter import filedialog
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import app
-import time
-import openpyxl
-import threading
+
 
 
 def set_temp_text(event, entry, temp_text):
@@ -24,7 +22,7 @@ def clear_temp_text(event, entry, temp_text):
 userDados = []
 caminhoPlanilha = ''
 
-def salvarLogin():
+def mainMarcarDepartamento():
     userLogin = login.get()
     userPassword = senha.get()
     userPlanilha = planilha.get()
@@ -34,7 +32,20 @@ def salvarLogin():
     userMarcarDepartamento()
 
 def userMarcarDepartamento():
-    app.teste(userDados[0], userDados[1], userDados[2])
+    app.iniciarAplicativoDepartamentos(userDados[0], userDados[1], userDados[2])
+
+def mainMarcarEnvioAgendado():
+    userLogin = login.get()
+    userPassword = senha.get()
+    userPlanilha = planilha.get()
+    userDados.append(userLogin)
+    userDados.append(userPassword)
+    userDados.append(userPlanilha)
+    userMarcarEnvioAgendado()
+
+def userMarcarEnvioAgendado():
+    app.iniciarAplicativoEnvioAgendado(userDados[0], userDados[1], userDados[2])
+
 
 def selecionarArquivo():
     file_path = filedialog.askopenfilename(title="Selecionar uma planilha", filetypes=[("Planilhas Excel", "*.xlsx")])
@@ -44,9 +55,8 @@ def selecionarArquivo():
 
 
 janela = Tk()
-janela.title("MailWave")
+janela.title("Robôzinho dos Cria")
 janela.geometry("720x600+610+153")
-janela.iconbitmap(default=".\\icones\\logo.ico")
 
 img_fundo = PhotoImage(file=".\\imagens\\layout.png")
 lab_fundo = Label(janela, image=img_fundo)
@@ -92,14 +102,26 @@ butao = Button(janela,
                fg="white",
                font=("Arimo", 11),
                justify=CENTER,
-               text="Entrar",
+               text="Marcar Departamentos",
                background="#8F01EC",
-               command=salvarLogin,
+               command=mainMarcarDepartamento,
    
                )
-butao.place(x=161, y=529, width=80, height=39)
+butao.place(x=85, y=500, width=250, height=39)
+
+butaoProcessos = Button(janela,
+               bd=2,
+               fg="white",
+               font=("Arimo", 11),
+               justify=CENTER,
+               text="Marcar Env. Agendado",
+               background="#8F01EC",
+               command=mainMarcarEnvioAgendado,
+   
+               )
+butaoProcessos.place(x=85, y=540, width=250, height=40)
 
 selecionar_planilha = Button(janela, text="Selecionar Planilha", fg="white", command=selecionarArquivo, background="#8F01EC")
-selecionar_planilha.place(x=125, y=430, width=148, height=40)
+selecionar_planilha.place(x=32, y=430, width=350, height=40)
 
 janela.mainloop()

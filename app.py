@@ -29,13 +29,21 @@ app = Aplicativo() '''
 # Utiliza o método de user para acessar a página de login
 # Função criada para testar a conexão entre os arquivos e se as variáveis estão sendo passadas
 
-def teste(userLogin, userPassword, userPlanilha):
+def iniciarAplicativoDepartamentos(userLogin, userPassword, userPlanilha):
 
     boot = navegador.navegadorAcessorias()
     user = usuario.usuarioAcessorias(boot.driver, userLogin, userPassword, userPlanilha)
     boot.abrirBrowser()
     user.fazerLogin()
     user.marcarDepartamento()
+
+def iniciarAplicativoEnvioAgendado(userLogin, userPassword, userPlanilha):
+
+    boot = navegador.navegadorAcessorias()
+    user = usuario.usuarioAcessorias(boot.driver, userLogin, userPassword, userPlanilha)
+    boot.abrirBrowser()
+    user.fazerLogin()
+    user.marcarEnvioAgendado()
 
 
 

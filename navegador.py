@@ -9,9 +9,14 @@ import time
 class navegadorAcessorias:
     def __init__(self):
         self.options = webdriver.ChromeOptions()
-        self.driver = webdriver.Chrome()
+        #self.options.add_argument('--headless')
+        self.options.add_argument('--disable-gpu')
+        #self.options.add_argument('window-size=945x1012')
+        self.driver = webdriver.Chrome(options=self.options)
 
     def abrirBrowser(self):
         driver = self.driver
         driver.implicitly_wait(10)
         driver.get("https://app.acessorias.com")
+
+        
